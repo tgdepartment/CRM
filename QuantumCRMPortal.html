@@ -1,0 +1,1224 @@
+<html lang="en">  
+<head>  
+  <meta charset="UTF-8">  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+  <title>Quantum CRM Portal</title>  
+  <style>  
+   /* Styles for the application */  
+   body {  
+    font-family: 'Arial', sans-serif;  
+    margin: 0;  
+    background: #272727;  
+    display: flex;  
+    flex-direction: column;  
+    align-items: center;  
+    height: 100vh;  
+    overflow-y: hidden;  
+    padding: 25px;  
+    color: #fff;  
+    scrollbar-width: none;  
+    -ms-overflow-style: none;  
+   }  
+  
+   body::-webkit-scrollbar {  
+    display: none;  
+   }  
+  
+   h1, h2 {  
+    color: #B5E5D9;  
+    font-weight: bold;  
+   }  
+  
+   h1 {  
+    font-family: 'Georgia', serif;  
+    font-size: 24px;  
+    margin-top: 10px;  
+    margin-bottom: 30px;  
+    text-align: center;  
+    text-shadow: 3px 3px 10px rgba(0,0,0,0.8);  
+    background-color: #fff;  
+    color: #000;  
+    padding: 10px;  
+    border-radius: 10px;  
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);  
+   }  
+  
+   h2 {  
+    font-size: 14px;  
+    margin-bottom: 30px;  
+    text-align: center;  
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.7);  
+   }  
+  
+   nav {  
+    margin-bottom: 10px;  
+    display: flex;  
+    justify-content: space-between;  
+    flex-wrap: wrap;  
+    gap: 20px;  
+    width: 100%;  
+   }  
+  
+   nav a {  
+    padding: 12px 20px;  
+    text-decoration: none;  
+    color: #000;  
+    background: rgb(255, 255, 255);  
+    border-radius: 10px;  
+    transition: background 0.3s, transform 0.3s ease-in-out;  
+    font-weight: bold;  
+    font-size: 14px;  
+    text-align: center;  
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);  
+   }  
+  
+   nav a:hover {  
+    background: linear-gradient(45deg, #00c6ff, #4ca1af);  
+    transform: scale(1.05);  
+   }  
+  
+   section {  
+    display: none;  
+    width: 100%;  
+   }  
+  
+   section.active {  
+    display: block;  
+   }  
+  
+   input, select, button {  
+    margin: 8px 0;  
+    padding: 25px;  
+    width: 100%;  
+    box-sizing: border-box;  
+    border: 1px solid rgb(3, 62, 89);  
+    border-radius: 10px;  
+    background-color: #e9e9e9;  
+    color: rgb(3, 3, 3);  
+   }  
+  
+   button {  
+    background-color: #fff;  
+    color: #000;  
+    padding: 6px 10px;  
+    font-size: 12px;  
+    cursor: pointer;  
+    width: auto;  
+    border-radius: 5px;  
+    border: none;  
+    transition: background 0.3s ease-in-out, transform 0.3s;  
+   }  
+  
+   button:hover {  
+    background-color: #ccc;  
+    transform: scale(1.05);  
+   }  
+  
+   #clientListTable {  
+    margin: 25px auto;  
+    width: 100%;  
+   }  
+  
+   #clientListTable th, #clientListTable td {  
+    padding: 6px 8px;  
+    border-bottom: 1px solid rgb(121, 121, 121);  
+    text-align: left;  
+    width: 10%;  
+   }  
+  
+   #clientListTable th:last-child, #clientListTable td:last-child {  
+    width: 100px;  
+   }  
+  
+   #clientListTable th {  
+    background-color: #065779;  
+    text-shadow: 2px 2px 6px rgba(0,0,0,0.7);  
+   }  
+  
+   #paymentsTable {  
+    width: 100%;  
+    border-collapse: collapse;  
+    margin-top: 25px;  
+    font-size: 14px;  
+    color: #ffffff;  
+   }  
+  
+   #paymentsTable th, #paymentsTable td {  
+    padding: 4px 8px;  
+    border-bottom: 1px solid rgb(252, 252, 252);  
+    text-align: left;  
+    width: 25%;  
+   }  
+  
+   #paymentsTable th {  
+    background-color: #26426f;  
+    text-shadow: 2px 2px 6px rgba(0,0,0,0.7);  
+   }  
+  
+   #expensesTable {  
+    width: 100%;  
+    border-collapse: collapse;  
+    margin-top: 25px;  
+    font-size: 14px;  
+    color: #B5E5D9;  
+   }  
+  
+   #expensesTable th, #expensesTable td {  
+    padding: px 8px;  
+    border-bottom: 1px solid rgb(252, 252, 252);  
+    text-align: left;  
+    width: 25%;  
+   }  
+  
+   #expensesTable th {  
+    background-color: #26426f;  
+    text-shadow: 2px 2px 6px rgba(0,0,0,0.7);  
+   }  
+  
+   .contact-section {  
+    margin-top: 30px;  
+    background-color: #000000;  
+    padding: 20px;  
+    border-radius: 10px;  
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);  
+    text-align: center;  
+   }  
+  
+   .contact-section h3 {  
+    font-size: 20px;  
+    color: #fffdfd;  
+   }  
+  
+   footer {  
+    text-align: center;  
+    padding: 15px;  
+    background-color: #000000;  
+    color: white;  
+    position: fixed;  
+    bottom: 0;  
+    width: 100%;  
+    font-size: 12px;  
+    margin-top: 5px;  
+   }  
+  
+   /* Mobile-friendly styles */  
+   @media (max-width: 400px) {  
+    #clientListCards {  
+      flex-direction: column;  
+    }  
+    #clientListCards div {  
+      margin: 10px 0;  
+    }  
+   }  
+  
+   .menu-button {  
+    background-color: transparent;  
+    border: none;  
+    padding: 0;  
+    cursor: pointer;  
+   }  
+  
+   .menu-button img {  
+    filter: invert(1);  
+   }  
+  
+   .menu {  
+    position: absolute;  
+    background-color: #000000;  
+    border-radius: 10px;  
+    padding: 10px;  
+    display: none;  
+   }  
+  
+   .menu button {  
+    margin: 10px 0;  
+   }  
+  
+   .report-bug-link {  
+    color: red;  
+   }  
+  
+   /* Client list table styles */  
+   #clientListTable {  
+    font-size: 14px;  
+   }  
+  
+   #clientListTable th, #clientListTable td {  
+    padding: 25px;  
+   }  
+  
+   /* Adjust column widths */  
+   #clientListTable th:nth-child(1), #clientListTable td:nth-child(1) {  
+    width: 20%;  
+   }  
+  
+   #clientListTable th:nth-child(2), #clientListTable td:nth-child(2) {  
+    width: 30%;  
+   }  
+  
+   #clientListTable th:nth-child(3), #clientListTable td:nth-child(3) {  
+    width: 20%;  
+   }  
+  
+   #clientListTable th:nth-child(4), #clientListTable td:nth-child(4) {  
+    width: 30%;  
+   }  
+  
+   /* Optional: For very small screens, show one row per block */  
+   @media only screen and (max-width: 395px) {  
+    #clientListTable, #clientListTable thead, #clientListTable tbody, #clientListTable th, #clientListTable td {  
+      display: block;  
+    }  
+  
+    #clientListTable thead tr {  
+      position: absolute;  
+      top: -9999px;  
+      left: -9999px;  
+    }  
+  
+    #clientListTable tr {  
+      border: 1px solid #ccc;  
+      margin-bottom: 10px;  
+    }  
+  
+    #clientListTable td {  
+      /* Stack blocks vertically */  
+      border: none;  
+      border-bottom: 1px solid #ddd;  
+      position: relative;  
+      padding-left: 50%;  
+    }  
+  
+    /* Example of labeling the first two columns (ID & Name) */  
+    #clientListTable td:nth-child(1):before { content: "ID"; }    
+    #clientListTable td:nth-child(2):before { content: "Name"; }    
+   }  
+  
+   /* Optional: Hide Non-Critical Columns on Very Small Screens */  
+   @media only screen and (max-width: 320px) {  
+    #clientListTable td:nth-child(n+3),    
+    #clientListTable th:nth-child(n+3) {    
+      display: none; /* Uncomment to hide columns (e.g., Email, Phone, Actions) */    
+    }    
+   }  
+  
+   #file-chooser {  
+    width: 180px;  
+    height: 30px;  
+    font-size: 12px;  
+   }  
+  
+   #addClient button, #addPayment button, #addExpense button {  
+    padding: 12px 20px;  
+    font-size: 14px;  
+    font-weight: bold;  
+   }  
+  </style>  
+</head>  
+<body>  
+  <nav>  
+   <a href="#" onclick="showSection('addClient')">Add Client</a>  
+   <a href="#" onclick="showSection('addPayment')">Add Payment</a>  
+   <a href="#" onclick="showSection('addExpense')">Add Expense</a>  
+   <a href="#" onclick="showSection('incomeData')">Income Data</a>  
+   <a href="#" onclick="showSection('clientList')">Client List</a>  
+   <a href="#" onclick="showSection('about')">About</a>  
+  </nav>  
+  
+  <!-- Add Client Section -->  
+  <section id="addClient" class="active">  
+   <h2>Add Client Account</h2>  
+   <form id="clientForm">  
+    <input type="text" placeholder="Client Name" id="clientName">  
+    <input type="text" placeholder="Client Contact" id="clientContact">  
+    <input type="text" placeholder="Address" id="clientAddress">  
+    <input type="text" placeholder="Rate" id="clientRate">  
+    <input type="text" placeholder="Hours" id="clientHours">  
+    <input type="text" placeholder="Amount Total" id="clientAmountTotal">  
+    <button type="submit">Add New Client</button>  
+   </form>  
+  </section>  
+  
+  <!-- Add Payment Section -->  
+  <section id="addPayment">  
+   <h2>Add New Payment</h2>  
+   <form id="paymentForm">  
+    <select id="clientSelect">  
+      <option value="">Select Client</option>  
+      <!-- Client options will be populated here -->  
+    </select>  
+    <input type="number" placeholder="Amount" id="paymentAmount">  
+    <input type="date" id="paymentDate">  
+    <div>  
+      <label>Payment Type:</label>  
+      <input type="checkbox" id="checkPayment" name="paymentType" value="Check">  
+      <label for="checkPayment">Check</label>  
+      <input type="checkbox" id="cashPayment" name="paymentType" value="Cash">  
+      <label for="cashPayment">Cash</label>  
+    </div>  
+    <button type="submit">Add New Payment</button>  
+   </form>  
+   <p id="paymentError" style="color: red;"></p>  
+   <p id="paymentSuccess" style="color: green;"></p>  
+  </section>  
+  
+  <!-- Add Expense Section -->  
+  <section id="addExpense">  
+   <h2>Add New Expense</h2>  
+   <form id="expenseForm">  
+    <input type="text" placeholder="Expense Description" id="expenseDescription">  
+    <input type="number" placeholder="Expense Amount" id="expenseAmount">  
+    <input type="date" id="expenseDate">  
+    <button type="submit">Add Expense</button>  
+   </form>  
+   <p id="expenseError" style="color: red;"></p>  
+   <p id="expenseSuccess" style="color: green;"></p>  
+  </section>  
+  
+  <!-- Income Data Section -->  
+  <section id="incomeData">  
+   <h2>Income Data Overview</h2>  
+   <div style="display: flex; justify-content: space-between; width: 100%;">  
+    <div>  
+      <h3>Payment Summary</h3>  
+      <p id="paymentSummary">Total Payments: $0</p>  
+    </div>  
+    <div>  
+      <h3>Expense Summary</h3>  
+      <p id="expenseSummary">Total Expenses: $0</p>  
+    </div>  
+   </div>  
+   <h3>Incoming Payments</h3>  
+   <table id="paymentsTable">  
+    <thead>  
+      <tr>  
+       <th>Client</th>  
+       <th>Amount</th>  
+       <th>Date</th>  
+       <th>Actions</th>  
+      </tr>  
+    </thead>  
+    <tbody id="paymentsTableBody">  
+      <!-- Incoming payments will be populated here -->  
+    </tbody>  
+   </table>  
+   <h3>Expenses</h3>  
+   <table id="expensesTable">  
+    <thead>  
+      <tr>  
+       <th>Description</th>  
+       <th>Amount</th>  
+       <th>Date</th>  
+       <th>Actions</th>  
+      </tr>  
+    </thead>  
+    <tbody id="expensesTableBody">  
+      <!-- Expenses will be populated here -->  
+    </tbody>  
+   </table>  
+   <div style="display: flex; justify-content: space-between; margin-top: 16px;">  
+    <button style="background-color: #fff; color: #000; padding: 4px 10px; font-size: 10px;" onclick="exportIncomeData()">Export Income Data</button>  
+    <button style="background-color: #fff; color: #000; padding: 4px 10px; font-size: 10px;" onclick="exportPaymentSummary()">Export Payment Summary</button>  
+    <button style="background-color: #fff; color: #000; padding: 4px 10px; font-size: 10px;" onclick="exportExpenseSummary()">Export Expense Summary</button>  
+    <button style="background-color: #fff; color: #000; padding: 4px 10px; font-size: 10px;" onclick="exportAllIncomeData()">Export All Income Data</button>  
+   </div>  
+  </section>  
+  
+  <!-- Client List Section -->  
+  <section id="clientList">  
+   <h2>Client Account List</h2>  
+   <table id="clientListTable">  
+    <thead>  
+      <tr>  
+       <th>Client</th>  
+       <th>Contact</th>  
+       <th>Address</th>  
+       <th>Rate</th>  
+       <th>Hours</th>  
+       <th>Amount</th>  
+       <th>Actions</th>  
+      </tr>  
+    </thead>  
+    <tbody id="clientListTableBody">  
+      <!-- Client list will be dynamically added here -->  
+    </tbody>  
+   </table>  
+   <div style="display: flex; justify-content: space-between; margin-top: 20px;">  
+    <button style="background-color: #fff; color: #000; padding: 6px 10px; font-size: 12px;" onclick="exportClientData()">Export Client Data</button>  
+    <input type="file" id="file-chooser" accept=".csv">  
+    <button id="load-data" style="background-color: #fff; color: #000; padding: 15px 15px; font-size: 10px;">Load Data</button>  
+   </div>  
+  </section>  
+  
+  <!-- About Section -->  
+  <section id="about">  
+   <div class="contact-section">  
+    <h3>About Quantum CRM Portal</h3>  
+    <p>Quantum CRM App Features    
+     <br><br><br><br>    
+     Adding New Clients    
+     <br><br>    
+     Adding New Payments    
+     <br><br>    
+     Adding New Expenses    
+     <br><br>    
+     Viewing Income Data    
+     <br><br>    
+     Visual Representation of Financial Performance    
+     Payment and Expense Tables    
+     <br><br>    
+     Viewing Client Data    
+     Easy Access to Client Details    
+     <br><br>    
+     Exporting Client Data and Payment Information    
+     <br><br>    
+     Validation and Data Integrity    
+     <br><br>    
+     <br><br><br><br>    
+     Quantum CRM Application provides the users with a comprehensive and user-friendly experience for managing client data and financial data effectively.    
+        
+        
+        
+      <br><a href="mailto:contact@tgappservice@gmaol.com" class="report-bug-link">Report Bug</a> <br>    
+    </div>    
+   </section>  
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.min.js"></script>  
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.0/dist/papaparse.min.js"></script>  
+  <script>  
+   // Initialize variables    
+   let db;    
+   let currentUser = null;    
+  
+   // Function to show a section    
+   function showSection(sectionId) {    
+    const sections = document.querySelectorAll('section');    
+    sections.forEach(section => section.style.display = 'none');    
+    document.getElementById(sectionId).style.display = 'block';    
+   }    
+  
+   // Add client functionality    
+   document.getElementById('clientForm').addEventListener('submit', function(event) {    
+    event.preventDefault();    
+    const name = document.getElementById('clientName').value.trim();    
+    const contact = document.getElementById('clientContact').value.trim();    
+    const address = document.getElementById('clientAddress').value.trim();    
+    const rate = document.getElementById('clientRate').value;    
+    const hours = document.getElementById('clientHours').value;    
+    const total = document.getElementById('clientAmountTotal').value;    
+  
+    // Add client to the clients array    
+    const newClient = { name, contact, address, rate, hours, total };    
+    addClientToDatabase(newClient);    
+  
+    // Clear the form fields after submission    
+    document.getElementById('clientForm').reset();    
+   });    
+  
+   // Function to add client to database    
+   function addClientToDatabase(client) {    
+    try {    
+      if (!db) {    
+       throw new Error('Database not initialized');    
+      }    
+      const transaction = db.transaction('clients', 'readwrite');    
+      const store = transaction.objectStore('clients');    
+      client.id = Date.now(); // Generate a unique id for the client    
+      const request = store.add(client);    
+      request.onsuccess = function() {    
+       console.log('Client added to database successfully');    
+       populateClientList();    
+       populateClientDropdown();    
+       showSection('incomeData');    
+      };    
+      request.onerror = function(event) {    
+       console.error('Error adding client to database:', event.target.error);    
+       alert(`Error adding client to database: ${event.target.error.message}`);    
+      };    
+      transaction.onabort = function() {    
+       console.error('Database transaction was aborted');    
+       alert('Database transaction was aborted. Please try again.');    
+      };    
+      transaction.onerror = function(event) {    
+       console.error('Database transaction error:', event.target.error);    
+       alert(`Database transaction error: ${event.target.error.message}`);    
+      };    
+    } catch (error) {    
+      console.error('Error adding client to database:', error);    
+      alert(`Error adding client to database: ${error.message}`);    
+    }    
+   }    
+  
+   // Function to populate the client dropdown    
+   function populateClientDropdown() {    
+    const clientSelect = document.getElementById('clientSelect');    
+    clientSelect.innerHTML = '<option value="">Select Client</option>'; // Clear existing options    
+    const transaction = db.transaction('clients', 'readonly');    
+    const store = transaction.objectStore('clients');    
+    const request = store.getAll();    
+    request.onsuccess = function() {    
+      const clients = request.result;    
+      clients.forEach(client => {    
+       const option = document.createElement('option');    
+       option.value = client.name;    
+       option.textContent = client.name;    
+       clientSelect.appendChild(option);    
+      });    
+    };    
+    request.onerror = function(event) {    
+      console.error('Error populating client dropdown:', event.target.error);    
+      alert('Error populating client dropdown. Please try again.');    
+    };    
+   }    
+  
+   // Add payment functionality    
+   document.getElementById('paymentForm').addEventListener('submit', function(event) {    
+    event.preventDefault();    
+    const client = document.getElementById('clientSelect').value;    
+    const amount = document.getElementById('paymentAmount').value;    
+    const date = document.getElementById('paymentDate').value;    
+    const paymentType = document.querySelector('input[name="paymentType"]:checked').value;    
+  
+    // Add new payment to the payments array    
+    const newPayment = { client, date, amount, paymentType };    
+    addPaymentToDatabase(newPayment);    
+  
+    // Clear the form fields after submission    
+    document.getElementById('paymentForm').reset();    
+   });    
+  
+   // Function to add payment to database    
+   function addPaymentToDatabase(payment) {    
+    try {    
+      if (!db) {    
+       throw new Error('Database not initialized');    
+      }    
+      const transaction = db.transaction('payments', 'readwrite');    
+      const store = transaction.objectStore('payments');    
+      payment.id = Date.now(); // Generate a unique id for the payment    
+      store.add(payment);    
+      transaction.oncomplete = function() {    
+       console.log('Payment added to database');    
+       updateIncomeData();    
+      };    
+      transaction.onerror = function(event) {    
+       console.error('Error adding payment to database:', event.target.error);    
+       alert('Error adding payment to database. Please try again.');    
+      };    
+      transaction.onabort = function() {    
+       console.error('Database transaction was aborted.');    
+       alert('Database transaction was aborted. Please try again.');    
+      };    
+    } catch (error) {    
+      console.error('Error adding payment to database:', error);    
+      alert('Error adding payment to database. Please try again.');    
+    }    
+   }    
+  
+   // Add expense functionality    
+   document.getElementById('expenseForm').addEventListener('submit', function(event) {    
+    event.preventDefault();    
+    const description = document.getElementById('expenseDescription').value;    
+    const amount = document.getElementById('expenseAmount').value;    
+    const date = document.getElementById('expenseDate').value;    
+  
+    // Add new expense to the expenses array    
+    const newExpense = { description, date, amount };    
+    addExpenseToDatabase(newExpense);    
+  
+    // Clear the form fields after submission    
+    document.getElementById('expenseForm').reset();    
+   });    
+  
+   // Function to add expense to database    
+   function addExpenseToDatabase(expense) {    
+    try {    
+      if (!db) {    
+       throw new Error('Database not initialized');    
+      }    
+      const transaction = db.transaction('expenses', 'readwrite');    
+      const store = transaction.objectStore('expenses');    
+      expense.id = Date.now(); // Generate a unique id for the expense    
+      store.add(expense);    
+      transaction.oncomplete = function() {    
+       console.log('Expense added to database');    
+       updateIncomeData();    
+      };    
+      transaction.onerror = function(event) {    
+       console.error('Error adding expense to database:', event.target.error);    
+       alert('Error adding expense to database. Please try again.');    
+      };    
+      transaction.onabort = function() {    
+       console.error('Database transaction was aborted.');    
+       alert('Database transaction was aborted. Please try again.');    
+      };    
+    } catch (error) {    
+      console.error('Error adding expense to database:', error);    
+      alert('Error adding expense to database. Please try again.');    
+    }    
+   }    
+  
+   // Function to export client data    
+   function exportClientData() {    
+    const transaction = db.transaction('clients', 'readonly');    
+    const store = transaction.objectStore('clients');    
+    const request = store.getAll();    
+    request.onsuccess = function() {    
+      const clients = request.result;    
+      const csvContent = "data:text/csv;charset=utf-8," +    
+      "Name,Contact,Address,Rate,Hours,Total\n" +    
+      clients.map(client => Object.values(client).join(",")).join("\n");    
+  
+      const encodedUri = encodeURI(csvContent);    
+      const link = document.createElement("a");    
+      link.setAttribute("href", encodedUri);    
+      link.setAttribute("download", "client_data.csv");    
+      document.body.appendChild(link);    
+      link.click();    
+      document.body.removeChild(link);    
+    };    
+    request.onerror = function(event) {    
+      console.error('Error exporting client data:', event.target.error);    
+      alert('Error exporting client data. Please try again.');    
+    };    
+   }    
+  
+   // Function to delete a client    
+   function deleteClient(button) {    
+    const row = button.closest('tr');    
+    const rowIndex = row.rowIndex - 1;    
+    const transaction = db.transaction('clients', 'readwrite');    
+    const store = transaction.objectStore('clients');    
+    const request = store.getAll();    
+    request.onsuccess = function() {    
+      const clients = request.result;    
+      store.delete(clients[rowIndex].id); // Delete by id instead of name    
+      transaction.oncomplete = function() {    
+       console.log('Client deleted from database');    
+       row.remove();    
+       populateClientDropdown();    
+      };    
+    };    
+    request.onerror = function(event) {    
+      console.error('Error deleting client:', event.target.error);    
+    };    
+   }    
+  
+   // Function to edit a client    
+   function editClient(button) {    
+    const row = button.closest('tr');    
+    const rowIndex = row.rowIndex - 1;    
+    const transaction = db.transaction('clients', 'readwrite');    
+    const store = transaction.objectStore('clients');    
+    const request = store.getAll();    
+    request.onsuccess = function() {    
+      const clients = request.result;    
+      const client = clients[rowIndex];    
+  
+      const form = document.createElement('form');    
+      form.innerHTML = `    
+      <td><input type="text" value="${client.name}" id="editClientName"></td>    
+      <td><input type="text" value="${client.contact}" id="editClientContact"></td>    
+      <td><input type="text" value="${client.address}" id="editClientAddress"></td>    
+      <td><input type="text" value="${client.rate}" id="editClientRate"></td>    
+      <td><input type="text" value="${client.hours}" id="editClientHours"></td>    
+      <td><input type="text" value="${client.total}" id="editClientTotal"></td>    
+      <td>    
+       <button type="submit">Save</button>    
+       <button type="button" onclick="cancelEdit(this)">Cancel</button>    
+      </td>    
+      `;    
+  
+      row.innerHTML = '';    
+      row.appendChild(form);    
+  
+      form.addEventListener('submit', function(event) {    
+       event.preventDefault();    
+       const editedClient = {    
+        id: client.id,    
+        name: document.getElementById('editClientName').value.trim(),    
+        contact: document.getElementById('editClientContact').value.trim(),    
+        address: document.getElementById('editClientAddress').value.trim(),    
+        rate: document.getElementById('editClientRate').value,    
+        hours: document.getElementById('editClientHours').value,    
+        total: document.getElementById('editClientTotal').value,    
+       };    
+  
+       store.put(editedClient);    
+       transaction.oncomplete = function() {    
+        console.log('Client updated in database');    
+        row.innerHTML = `    
+         <td>${editedClient.name}</td>    
+         <td>${editedClient.contact}</td>    
+         <td>${editedClient.address}</td>    
+         <td>${editedClient.rate}</td>    
+         <td>${editedClient.hours}</td>    
+         <td>${editedClient.total}</td>    
+         <td>    
+          <button class="menu-button" onclick="showMenu(this)">    
+          <img src="https://img.icons8.com/material-outlined/24/000000/more.png">    
+          </button>    
+          <div class="menu" style="display: none;">    
+          <button onclick="editClient(this)">Edit</button>    
+          <button onclick="deleteClient(this)">Delete</button>    
+          </div>    
+         </td>    
+        `;    
+  
+        populateClientDropdown();    
+       };    
+      });    
+    };    
+    request.onerror = function(event) {    
+      console.error('Error editing client:', event.target.error);    
+    };    
+   }    
+  
+   // Function to cancel editing    
+   function cancelEdit(button) {    
+    const row = button.closest('tr');    
+    const rowIndex = row.rowIndex - 1;    
+    const transaction = db.transaction('clients', 'readonly');    
+    const store = transaction.objectStore('clients');    
+    const request = store.getAll();    
+    request.onsuccess = function() {    
+      const clients = request.result;    
+      const client = clients[rowIndex];    
+  
+      row.innerHTML = `    
+      <td>${client.name}</td>    
+      <td>${client.contact}</td>    
+      <td>${client.address}</td>    
+      <td>${client.rate}</td>    
+      <td>${client.hours}</td>    
+      <td>${client.total}</td>    
+      <td>    
+       <button class="menu-button" onclick="showMenu(this)">    
+        <img src="https://img.icons8.com/material-outlined/24/000000/more.png">    
+       </button>    
+       <div class="menu" style="display: none;">    
+        <button onclick="editClient(this)">Edit</button>    
+        <button onclick="deleteClient(this)">Delete</button>    
+       </div>    
+      </td>    
+      `;    
+    };    
+    request.onerror = function(event) {    
+      console.error('Error canceling edit:', event.target.error);    
+    };    
+   }    
+  
+   // Function to show menu    
+   function showMenu(button) {    
+    const menu = button.nextElementSibling;    
+    if (menu.style.display === 'block') {    
+      menu.style.display = 'none';    
+    } else {    
+      menu.style.display = 'block';    
+    }    
+   }    
+  
+   // Function to populate the client list table    
+   function populateClientList() {    
+    const table = document.getElementById('clientListTableBody');    
+    table.innerHTML = '';    
+    const transaction = db.transaction('clients', 'readonly');    
+    const store = transaction.objectStore('clients');    
+    const request = store.getAll();    
+    request.onsuccess = function() {    
+      const clients = request.result;    
+      clients.forEach(client => {    
+       const row = table.insertRow();    
+       row.innerHTML = `    
+        <td>${client.name}</td>    
+        <td>${client.contact}</td>    
+        <td>${client.address}</td>    
+        <td>${client.rate}</td>    
+        <td>${client.hours}</td>    
+        <td>${client.total}</td>    
+        <td>    
+        <button class="menu-button" onclick="showMenu(this)">    
+         <img src="https://img.icons8.com/material-outlined/24/000000/more.png">    
+        </button>    
+        <div class="menu" style="display: none;">    
+         <button onclick="editClient(this)">Edit</button>    
+         <button onclick="deleteClient(this)">Delete</button>    
+        </div>    
+        </td>    
+       `;    
+      });    
+    };    
+    request.onerror = function(event) {    
+      console.error('Error populating client list:', event.target.error);    
+    };    
+   }    
+  
+   // Function to update the income data    
+   function updateIncomeData() {    
+    // Update the payment summary    
+    const transaction = db.transaction('payments', 'readonly');    
+    const store = transaction.objectStore('payments');    
+    const request = store.getAll();    
+    request.onsuccess = function() {    
+      const payments = request.result;    
+      const totalPayments = payments.reduce((acc, payment) => acc + parseFloat(payment.amount), 0);    
+      document.getElementById('paymentSummary').innerHTML = `Total Payments: $${totalPayments.toFixed(2)}`;    
+    };    
+    request.onerror = function(event) {    
+      console.error('Error updating payment summary:', event.target.error);    
+    };    
+  
+    // Update the expense summary    
+    const expenseTransaction = db.transaction('expenses', 'readonly');    
+    const expenseStore = expenseTransaction.objectStore('expenses');    
+    const expenseRequest = expenseStore.getAll();    
+    expenseRequest.onsuccess = function() {    
+      const expenses = expenseRequest.result;    
+      const totalExpenses = expenses.reduce((acc, expense) => acc + parseFloat(expense.amount), 0);    
+      document.getElementById('expenseSummary').innerHTML = `Total Expenses: $${totalExpenses.toFixed(2)}`;    
+    };    
+    expenseRequest.onerror = function(event) {    
+      console.error('Error updating expense summary:', event.target.error);    
+    };    
+  
+    // Update the payments table    
+    const paymentsTable = document.getElementById('paymentsTableBody');    
+    paymentsTable.innerHTML = '';    
+    const paymentsTransaction = db.transaction('payments', 'readonly');    
+    const paymentsStore = paymentsTransaction.objectStore('payments');    
+    const paymentsRequest = paymentsStore.getAll();    
+    paymentsRequest.onsuccess = function() {    
+      const payments = paymentsRequest.result;    
+      payments.forEach(payment => {    
+       const row = paymentsTable.insertRow();    
+       row.innerHTML = `    
+        <td>${payment.client}</td>    
+        <td>${payment.amount}</td>    
+        <td>${payment.date}</td>    
+        <td><button onclick="deletePayment(this)">Delete</button></td>    
+       `;    
+      });    
+    };    
+    paymentsRequest.onerror = function(event) {    
+      console.error('Error updating payments table:', event.target.error);    
+    };    
+  
+    // Update the expenses table    
+    const expensesTable = document.getElementById('expensesTableBody');    
+    expensesTable.innerHTML = '';    
+    const expensesTransaction = db.transaction('expenses', 'readonly');    
+    const expensesStore = expensesTransaction.objectStore('expenses');    
+    const expensesRequest = expensesStore.getAll();    
+    expensesRequest.onsuccess = function() {    
+      const expenses = expensesRequest.result;    
+      expenses.forEach(expense => {    
+       const row = expensesTable.insertRow();    
+       row.innerHTML = `    
+        <td>${expense.description}</td>    
+        <td>${expense.amount}</td>    
+        <td>${expense.date}</td>    
+        <td><button onclick="deleteExpense(this)">Delete</button></td>    
+       `;    
+      });    
+    };    
+    expensesRequest.onerror = function(event) {    
+      console.error('Error updating expenses table:', event.target.error);    
+    };    
+   }    
+  
+   // Function to delete a payment    
+   function deletePayment(button) {    
+    const row = button.closest('tr');    
+    const rowIndex = row.rowIndex - 1;    
+    const transaction = db.transaction('payments', 'readwrite');    
+    const store = transaction.objectStore('payments');    
+    const request = store.getAll();    
+    request.onsuccess = function() {    
+      const payments = request.result;    
+      store.delete(payments[rowIndex].id); // Delete by id instead of date    
+      transaction.oncomplete = function() {    
+       console.log('Payment deleted from database');    
+       row.remove();    
+       updateIncomeData();    
+      };    
+    };    
+    request.onerror = function(event) {    
+      console.error('Error deleting payment:', event.target.error);    
+      alert('Error deleting payment. Please try again.');    
+    };    
+   }    
+  
+   // Function to delete an expense    
+   function deleteExpense(button) {    
+    const row = button.closest('tr');    
+    const rowIndex = row.rowIndex - 1;    
+    const transaction = db.transaction('expenses', 'readwrite');    
+    const store = transaction.objectStore('expenses');    
+    const request = store.getAll();    
+    request.onsuccess = function() {    
+      const expenses = request.result;    
+      store.delete(expenses[rowIndex].id); // Delete by id instead of date    
+      transaction.oncomplete = function() {    
+       console.log('Expense deleted from database');    
+       row.remove();    
+       updateIncomeData();    
+      };    
+    };    
+    request.onerror = function(event) {    
+      console.error('Error deleting expense:', event.target.error);    
+      alert('Error deleting expense. Please try again.');    
+    };    
+   }    
+  
+   // Function to export income data    
+   function exportIncomeData() {    
+    const transaction = db.transaction('payments', 'readonly');    
+    const store = transaction.objectStore('payments');    
+    const request = store.getAll();    
+    request.onsuccess = function() {    
+      const payments = request.result;    
+      const csvContent = "data:text/csv;charset=utf-8," +    
+      "Client,Amount,Date\n" +    
+      payments.map(payment => `${payment.client},${payment.amount},${payment.date}`).join("\n");    
+  
+      const encodedUri = encodeURI(csvContent);    
+      const link = document.createElement("a");    
+      link.setAttribute("href", encodedUri);    
+      link.setAttribute("download", "income_data.csv");    
+      document.body.appendChild(link);    
+      link.click();    
+      document.body.removeChild(link);    
+    };    
+    request.onerror = function(event) {    
+      console.error('Error exporting income data:', event.target.error);    
+      alert('Error exporting income data. Please try again.');    
+    };    
+   }    
+  
+   // Function to export payment summary    
+   function exportPaymentSummary() {    
+    const transaction = db.transaction('payments', 'readonly');    
+    const store = transaction.objectStore('payments');    
+    const request = store.getAll();    
+    request.onsuccess = function() {    
+      const payments = request.result;    
+      const totalPayments = payments.reduce((acc, payment) => acc + parseFloat(payment.amount), 0);    
+      const csvContent = "data:text/csv;charset=utf-8," +    
+      "Total Payments\n" +    
+      `${totalPayments.toFixed(2)}`;    
+  
+      const encodedUri = encodeURI(csvContent);    
+      const link = document.createElement("a");    
+      link.setAttribute("href", encodedUri);    
+      link.setAttribute("download", "payment_summary.csv");    
+      document.body.appendChild(link);    
+      link.click();    
+      document.body.removeChild(link);    
+    };    
+    request.onerror = function(event) {    
+      console.error('Error exporting payment summary:', event.target.error);    
+      alert('Error exporting payment summary. Please try again.');    
+    };    
+   }    
+  
+   // Function to export expense summary    
+   function exportExpenseSummary() {    
+    const transaction = db.transaction('expenses', 'readonly');    
+    const store = transaction.objectStore('expenses');    
+    const request = store.getAll();    
+    request.onsuccess = function() {    
+      const expenses = request.result;    
+      const totalExpenses = expenses.reduce((acc, expense) => acc + parseFloat(expense.amount), 0);    
+      const csvContent = "data:text/csv;charset=utf-8," +    
+      "Total Expenses\n" +    
+      `${totalExpenses.toFixed(2)}`;    
+  
+      const encodedUri = encodeURI(csvContent);    
+      const link = document.createElement("a");    
+      link.setAttribute("href", encodedUri);    
+      link.setAttribute("download", "expense_summary.csv");    
+      document.body.appendChild(link);    
+      link.click();    
+      document.body.removeChild(link);    
+    };    
+    request.onerror = function(event) {    
+      console.error('Error exporting expense summary:', event.target.error);    
+      alert('Error exporting expense summary. Please try again.');    
+    };    
+   }    
+  
+   // Function to export all income data    
+   function exportAllIncomeData() {    
+    const transaction = db.transaction('payments', 'readonly');    
+    const store = transaction.objectStore('payments');    
+    const request = store.getAll();    
+    request.onsuccess = function() {    
+      const payments = request.result;    
+      const csvContent = "data:text/csv;charset=utf-8," +    
+      "Client,Amount,Date\n" +    
+      payments.map(payment => `${payment.client},${payment.amount},${payment.date}`).join("\n");    
+  
+      const expenseTransaction = db.transaction('expenses', 'readonly');    
+      const expenseStore = expenseTransaction.objectStore('expenses');    
+      const expenseRequest = expenseStore.getAll();    
+      expenseRequest.onsuccess = function() {    
+       const expenses = expenseRequest.result;    
+       const totalPayments = payments.reduce((acc, payment) => acc + parseFloat(payment.amount), 0);    
+       const totalExpenses = expenses.reduce((acc, expense) => acc + parseFloat(expense.amount), 0);    
+       const allIncomeData = `Total Payments,${totalPayments.toFixed(2)}\n` +    
+        `Total Expenses,${totalExpenses.toFixed(2)}\n` +    
+        payments.map(payment => `${payment.client},${payment.amount},${payment.date}`).join("\n") + "\n" +    
+        expenses.map(expense => `${expense.description},${expense.amount},${expense.date}`).join("\n");    
+  
+       const encodedUri = encodeURI(`data:text/csv;charset=utf-8,${csvContent}\n${allIncomeData}`);    
+       const link = document.createElement("a");    
+       link.setAttribute("href", encodedUri);    
+       link.setAttribute("download", "all_income_data.csv");    
+       document.body.appendChild(link);    
+       link.click();    
+       document.body.removeChild(link);    
+      };    
+      expenseRequest.onerror = function(event) {    
+       console.error('Error exporting all income data:', event.target.error);    
+       alert('Error exporting all income data. Please try again.');    
+      };    
+    };    
+    request.onerror = function(event) {    
+      console.error('Error exporting all income data:', event.target.error);    
+      alert('Error exporting all income data. Please try again.');    
+    };    
+   }    
+  
+   // Function to handle file upload  
+   document.getElementById('load-data').addEventListener('click', function() {  
+    const fileInput = document.getElementById('file-chooser');  
+    const file = fileInput.files[0];  
+  
+    if (file) {  
+      const reader = new FileReader();  
+      reader.onload = function(event) {  
+       const csvData = event.target.result;  
+       const csvArray = csvData.split('\n').map(row => row.split(','));  
+       const clients = [];  
+  
+       csvArray.forEach((row, index) => {  
+        if (index > 0) {  
+          const client = {  
+           name: row[0],  
+           contact: row[1],  
+           address: row[2],  
+           rate: row[3],  
+           hours: row[4],  
+           total: row[5]  
+          };  
+          clients.push(client);  
+        }  
+       });  
+  
+       // Add clients to database  
+       clients.forEach(client => {  
+        addClientToDatabase(client);  
+       });  
+  
+       // Update client list table  
+       populateClientList();  
+      };  
+      reader.readAsText(file);  
+    }  
+   });  
+  
+   // Function to initialize the database    
+   function initDatabase() {    
+    if (db) return; // Check if db is already initialized    
+    const request = indexedDB.open('quantumCrm', 1);    
+    request.onupgradeneeded = function(event) {    
+      db = event.target.result;    
+      const clientStore = db.createObjectStore('clients', { keyPath: 'id' });    
+      const paymentStore = db.createObjectStore('payments', { keyPath: 'id' });    
+      const expenseStore = db.createObjectStore('expenses', { keyPath: 'id' });    
+    };    
+    request.onsuccess = function() {    
+      db = request.result;    
+      populateClientList();    
+      updateIncomeData();    
+    };    
+    request.onerror = function(event) {    
+      console.error('Error initializing database:', event.target.error);    
+      alert('Error initializing database. Please try again.');    
+    };    
+    request.onabort = function() {    
+      console.error('Database transaction was aborted.');    
+      alert('Database transaction was aborted. Please try again.');    
+    };    
+   }    
+  
+   // Function to auto-save data to phone storage    
+   function autoSaveData() {    
+    const data = { /* Collect your app's data here */ };    
+    const jsonData = JSON.stringify(data, null, 2);    
+  
+    // Use the File System API to save data to a file    
+    navigator.storage.getDirectory().then(directory => {    
+      directory.getFile('app_data.json', { create: true }).then(file => {    
+      file.createWritable().then(writable => {    
+       writable.write(0, jsonData).then(() => {    
+        console.log('Data auto-saved successfully!');    
+       }).catch(error => {    
+        console.error('Error auto-saving data:', error);    
+       });    
+      }).catch(error => {    
+       console.error('Error creating file writer:', error);    
+      });    
+      }).catch(error => {    
+      console.error('Error getting file entry:', error);    
+      });    
+    }).catch(error => {    
+      console.error('Error requesting file system:', error);    
+    });    
+   }    
+  
+   // Function to handle custom file destination selection    
+   function handleFileDestinationSelection() {    
+    const fileChooser = document.getElementById('file-chooser');    
+    fileChooser.addEventListener('change', (e) => {    
+      const selectedDirectory = e.target.files[0].path;    
+      // Save data to the selected directory using the File System API    
+      const data = { /* Collect your app's data here */ };    
+      const jsonData = JSON.stringify(data, null, 2);    
+  
+      navigator.storage.getDirectory().then(directory => {    
+       directory.getDirectory(selectedDirectory, { create: true }).then(dirEntry => {    
+        dirEntry.getFile('custom_app_data.json', { create: true }).then(file => {    
+        file.createWritable().then(writable => {    
+         writable.write(0, jsonData).then(() => {    
+          console.log('Data saved to custom destination successfully!');    
+         }).catch(error => {    
+          console.error('Error saving data to custom destination:', error);    
+         });    
+        }).catch(error => {    
+         console.error('Error creating file writer:', error);    
+        });    
+        }).catch(error => {    
+        console.error('Error getting file entry:', error);    
+        });    
+       }).catch(error => {    
+        console.error('Error requesting file system:', error);    
+       });    
+      }).catch(error => {    
+       console.error('Error requesting file system:', error);    
+      });    
+    });    
+   }    
+  
+   initDatabase();    
+  
+
+
+
+
+
+   
+  </script>  
+</body>  
+</html>
